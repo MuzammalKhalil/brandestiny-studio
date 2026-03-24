@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l /d/StratonAlly/Code/brandestiny-studio/src/components/*.tsx)",
+      "Bash(ls -lh /d/StratonAlly/Code/brandestiny-studio/*.pen)"
+    ]
+  }
+}

@@ -55,6 +55,7 @@ export default {
         "cream-light": "hsl(var(--cream-light))",
         "surface-dark": "hsl(var(--surface-dark))",
         "surface-card": "hsl(var(--surface-card))",
+        grey: "hsl(var(--grey))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -88,12 +89,17 @@ export default {
           from: { opacity: "0", transform: "translateY(30px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        "marquee": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "spin-slow": "spin-slow 20s linear infinite",
         "fade-up": "fade-up 0.6s ease-out forwards",
+        "marquee": "marquee 30s linear infinite",
       },
     },
   },
