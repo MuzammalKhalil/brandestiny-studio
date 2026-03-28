@@ -17,22 +17,26 @@ const HeroSection = () => {
         background: "radial-gradient(ellipse at center, transparent 30%, rgba(2,2,2,0.6) 100%)"
       }} />
 
-      {/* Hero visual — astronaut */}
+      {/* Hero visual — astronaut replaced with video */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center z-0"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
       >
-        <img
-          src={heroImg}
-          alt="Creative visual"
-          className="w-[300px] md:w-[400px] lg:w-[500px] xl:w-[600px] object-contain opacity-80"
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover opacity-60"
           style={{
             filter: "drop-shadow(0 20px 60px rgba(0,0,0,0.5))",
-            animation: "float 6s ease-in-out infinite",
           }}
-        />
+        >
+          <source src="/Brandestiny.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </motion.div>
 
       {/* Central horizontal dashed line and crosshair */}
