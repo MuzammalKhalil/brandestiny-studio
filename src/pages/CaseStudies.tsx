@@ -61,6 +61,27 @@ const caseStudies = [
     category: "Art Direction",
     nda: false,
   },
+  {
+    id: 7,
+    title: "Eco Packaging",
+    image: project1,
+    category: "Product Design",
+    nda: true,
+  },
+  {
+    id: 8,
+    title: "HealthTech App",
+    image: project2,
+    category: "Mobile UI",
+    nda: false,
+  },
+  {
+    id: 9,
+    title: "Modern Furniture",
+    image: project3,
+    category: "3D Rendering",
+    nda: false,
+  },
 ];
 
 const CaseStudies = () => {
@@ -88,42 +109,43 @@ const CaseStudies = () => {
 
   return (
     <SmoothScroll>
-      <div className="bg-black text-white">
+      <div className="bg-black text-white min-h-screen">
         <CustomCursor />
         <NavPill />
         
-        <main ref={triggerRef} className="overflow-hidden pt-24 md:pt-32">
+        <main ref={triggerRef} className="overflow-x-hidden pt-20 md:pt-32 pb-5 md:pb-5">
           <div 
             ref={sectionRef}
-            className="flex items-center h-[85vh] w-fit px-6 md:px-12 gap-12 md:gap-24"
+            className="flex flex-col md:flex-row md:items-center h-auto md:h-[80vh] w-full md:w-fit px-6 md:px-20 gap-8 md:gap-12"
           >
             {/* Header / Heading - Now the first item in the horizontal track */}
-            <div className="min-w-[70vw] md:min-w-[500px] flex flex-col justify-center flex-shrink-0">
-              <div className="flex flex-col gap-8">
+            <div className="w-fit md:min-w-[500px] flex flex-col justify-center flex-shrink-0 pt-10 md:pt-0 h-auto md:h-full">
+              <div className="flex flex-col gap-6 md:gap-8">
                 <h1 
                   className="font-display font-bold tracking-tight leading-[0.9]"
-                  style={{ fontSize: "clamp(3.5rem, 8vw, 7.5rem)" }}
+                  style={{ fontSize: "clamp(3.5rem, 10vw, 7.5rem)" }}
                 >
                   Case <br /> Studies
                 </h1>
-                <div className="max-w-xs text-gray-500 font-grotesk text-sm uppercase tracking-widest leading-relaxed">
-                  Explorations of digital <br />
-                  products and brand <br />
+                <div className="max-w-[280px] md:max-w-xs text-gray-500 font-grotesk text-xs md:text-sm uppercase tracking-widest leading-relaxed">
+                  Explorations of digital <br className="hidden md:block" />
+                  products and brand <br className="hidden md:block" />
                   identities that push boundaries.
                 </div>
-                <div className="mt-8 flex items-center gap-4 text-white/30 text-xs font-bold tracking-widest uppercase">
-                  <span>Scroll to explore</span>
-                  <div className="w-12 h-[1px] bg-white/10" />
+                <div className="mt-8 md:mt-12 flex items-center gap-4 text-white/30 text-[10px] md:text-xs font-bold tracking-widest uppercase">
+                  <span className="md:block hidden">Scroll to explore</span>
+                  <span className="md:hidden block">Scroll down to explore</span>
+                  <div className="w-8 md:w-12 h-[1px] bg-white/10" />
                 </div>
               </div>
             </div>
 
             {/* Cards section */}
-            <div className="flex gap-4 md:gap-8 items-center h-full">
+            <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-center w-full md:h-full py-10 md:py-0">
               {caseStudies.map((study) => (
                 <motion.div
                   key={study.id}
-                  className="relative w-[85vw] md:w-[420px] aspect-[4/5] md:aspect-[3/4] rounded-[2.5rem] overflow-hidden group flex-shrink-0"
+                  className="relative w-full sm:w-[85vw] md:w-[380px] aspect-[4/5] md:aspect-[3/4] rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden group flex-shrink-0 max-h-[70vh]"
                   whileHover={{ scale: 0.98 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
@@ -138,20 +160,20 @@ const CaseStudies = () => {
 
                   {/* NDA Badge */}
                   {study.nda && (
-                    <div className="absolute top-10 left-10">
-                      <div className="bg-white text-black px-5 py-2 rounded-full shadow-2xl">
-                        <span className="text-[10px] font-bold tracking-widest uppercase">Project under NDA</span>
+                    <div className="absolute top-6 left-6 md:top-10 md:left-10">
+                      <div className="bg-white text-black px-3 py-1 md:px-5 md:py-2 rounded-full shadow-2xl">
+                        <span className="text-[8px] md:text-[10px] font-bold tracking-widest uppercase">NDA</span>
                       </div>
                     </div>
                   )}
 
                   {/* Content */}
-                  <div className="absolute bottom-10 left-10 right-10">
-                    <h3 className="text-4xl md:text-5xl font-bold tracking-tight mb-3 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10">
+                    <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-2 md:mb-3 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                       {study.title}
                     </h3>
-                    <div className="h-[1px] w-0 group-hover:w-full bg-white/30 transition-all duration-700 mb-4" />
-                    <p className="text-gray-400 text-xs md:text-sm uppercase tracking-[0.2em] font-medium">
+                    <div className="h-[1px] w-0 group-hover:w-full bg-white/30 transition-all duration-700 mb-3 md:mb-4" />
+                    <p className="text-gray-400 text-[10px] md:text-xs lg:text-sm uppercase tracking-[0.2em] font-medium">
                       {study.category}
                     </p>
                   </div>
@@ -165,7 +187,7 @@ const CaseStudies = () => {
             </div>
             
             {/* End spacer for padding */}
-            <div className="w-20 md:w-40 flex-shrink-0 h-1" />
+            <div className="w-2 md:w-4 flex-shrink-0 h-1" />
           </div>
         </main>
 
