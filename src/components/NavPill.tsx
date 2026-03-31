@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 const navItems = [
   { label: "HOME", number: "01", href: "/" },
   { label: "CASE STUDIES", number: "02", href: "/case-studies" },
+  { label: "LET'S CONNECT", number: "03", href: "/lets-connect" },
 ];
 
 const NavPill = () => {
@@ -267,7 +268,7 @@ const NavPill = () => {
                 transition={{ duration: 0.4, delay: 0.4 }}
               >
                 <button
-                  onClick={() => handleNavClick("/#contact")}
+                  onClick={() => handleNavClick("/lets-connect")}
                   className="group flex items-center gap-[10px] relative cursor-pointer text-left w-fit interactive"
                 >
                   <span
