@@ -2,6 +2,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,7 +25,8 @@ const steps = [
 ];
 
 const HowWeWork = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const containerRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const stepsContainerRef = useRef<HTMLDivElement>(null);
   const stepsRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -157,17 +159,13 @@ const HowWeWork = () => {
           {/* Persistent Step UI Area (Button) */}
           <div className="flex flex-col items-center mb-12 relative z-20">
             {/* Step Button */}
-            <a
-              href="#contact"
+            <button
+              onClick={() => navigate("/lets-connect")}
               className="inline-flex items-center justify-center text-black font-bold text-xs md:text-sm tracking-[0.2em] uppercase px-10 py-4 rounded-xl hover:scale-105 transition-transform shadow-[0_0_20px_rgba(253,227,198,0.3)] mb-8"
               style={{ backgroundColor: "#FDE3C6" }}
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
-              }}
             >
               Let's Connect
-            </a>
+            </button>
           </div>
 
         </div>

@@ -1,27 +1,65 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useNavigate } from "react-router-dom";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const services = ["WEBSITE", "MOBILE APP", "WEB APP", "BRAND", "SOCIAL MEDIA"];
 
 const CTASection = () => {
+  const navigate = useNavigate();
   const containerRef = useRef<HTMLElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const servicesRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
-  // Background elements will gradually blur more as you scroll down through the section
-  const dynamicBlur = useTransform(scrollYProgress, [0.3, 0.8], ["blur(0px)", "blur(60px)"]);
+  useGSAP(() => {
+    if (!containerRef.current) return;
+
+    const items = servicesRefs.current.filter((el): el is HTMLSpanElement => Boolean(el));
+    if (items.length === 0) return;
+
+    gsap.set(items, { opacity: 0.18, filter: "blur(16px)" });
+    gsap.set(items[0], { opacity: 1, filter: "blur(0px)" });
+
+    if (backgroundRef.current) {
+      gsap.set(backgroundRef.current, { filter: "blur(0px)" });
+    }
+
+    const steps = Math.max(1, items.length - 1);
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: () => `+=${steps * 420}`,
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    if (backgroundRef.current) {
+      tl.to(backgroundRef.current, { filter: "blur(60px)", ease: "none", duration: steps }, 0);
+    }
+
+    for (let i = 0; i < items.length - 1; i += 1) {
+      tl.to(items[i], { opacity: 0.18, filter: "blur(16px)", duration: 1, ease: "power2.inOut" }, i);
+      tl.to(items[i + 1], { opacity: 1, filter: "blur(0px)", duration: 1, ease: "power2.inOut" }, i);
+    }
+  }, { scope: containerRef });
 
   return (
     <section ref={containerRef} id="contact" className="w-full relative overflow-hidden px-6 md:px-10 py-24 md:py-36" style={{ background: "var(--black-2)" }}>
       
       {/* Background Visuals that Blur on Scroll */}
       <motion.div 
+        ref={backgroundRef}
         className="absolute inset-0 z-0 pointer-events-none"
-        style={{ filter: dynamicBlur }}
       >
         <div className="absolute top-[10%] left-[10%] w-[300px] h-[300px] bg-[#2d5af1]/20 rounded-full mix-blend-screen blur-[40px]" />
         <div className="absolute bottom-[20%] right-[10%] w-[400px] h-[400px] bg-[#fde3c6]/10 rounded-full mix-blend-screen blur-[60px]" />
@@ -40,17 +78,14 @@ const CTASection = () => {
 
         <div className="flex flex-col items-center mb-14">
           {services.map((service, i) => (
-            <motion.span
+            <span
               key={service}
+              ref={(el) => { servicesRefs.current[i] = el; }}
               className="font-display text-white font-bold leading-[1.1] tracking-tight"
               style={{ fontSize: "clamp(2.5rem, 6vw, 6.5rem)" }}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.07, duration: 0.5 }}
             >
               {service}
-            </motion.span>
+            </span>
           ))}
         </div>
 
@@ -61,23 +96,22 @@ const CTASection = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          <a
-            href="mailto:info@brandestiny.co"
+          <button
+            onClick={() => navigate("/lets-connect")}
             className="inline-flex items-center gap-3 text-[#020202] text-[13px] font-semibold tracking-wider uppercase px-7 py-4 hover:brightness-110 transition-all duration-300"
             style={{ background: "#fde3c6", borderRadius: 100 }}
           >
             Let's Connect
             <ArrowRight size={14} />
-          </a>
-          <a
-            href="#contact"
+          </button>
+          <button
+            onClick={() => navigate("/lets-connect")}
             className="inline-flex items-center gap-3 text-white text-[13px] font-semibold tracking-wider uppercase px-7 py-4 hover:bg-white hover:text-[#020202] transition-all duration-300"
             style={{ border: "1px solid rgba(255,255,255,0.35)", borderRadius: 100 }}
-            onClick={(e) => e.preventDefault()}
           >
             Book a Call
             <ArrowRight size={14} />
-          </a>
+          </button>
         </motion.div>
       </div>
 

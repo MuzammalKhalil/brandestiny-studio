@@ -18,15 +18,38 @@ const NavPill = () => {
 
   // Scroll progress tracker -> horizontal fill
   useEffect(() => {
-    const handleScroll = () => {
+    let rafId = 0;
+    let lastProgress = -1;
+
+    const computeProgress = () => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
+      return docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
+    };
+
+    const update = () => {
+      const progress = computeProgress();
+      if (Math.abs(progress - lastProgress) > 0.001) {
+        lastProgress = progress;
+        setScrollProgress(progress);
+      }
+      rafId = window.requestAnimationFrame(update);
+    };
+
+    const handleScroll = () => {
+      const progress = computeProgress();
+      lastProgress = progress;
       setScrollProgress(progress);
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    rafId = window.requestAnimationFrame(update);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.cancelAnimationFrame(rafId);
+    };
   }, []);
 
   useEffect(() => {
@@ -116,17 +139,6 @@ const NavPill = () => {
           />
         )}
 
-        {/* ── Scroll progress fill — the gray fill that grows left→right ── */}
-        <div
-          className="absolute top-0 left-0 bottom-0 z-0 h-[54px]" // Only fill the collapsed pill part
-          style={{
-            width: `${scrollProgress * 100}%`,
-            backgroundColor: "rgba(255, 255, 255, 0.08)",
-            borderRadius: "inherit",
-            transition: "width 0.1s ease-out",
-          }}
-        />
-
         {/* ── Inner header strip (pill-in-pill) ── */}
         {/* Takes exactly 44px inside the 54px pill, meaning 5px gap top/bottom, 5px gap left/right */}
         <div
@@ -137,11 +149,22 @@ const NavPill = () => {
             right: 5,
             height: 44,
             borderRadius: 16,
-            backgroundColor: "rgba(255, 255, 255, 0.15)",
+            backgroundColor: "transparent",
+            border: "1px solid rgba(255, 255, 255, 0.10)",
             overflow: "hidden",
             pointerEvents: "none",
           }}
-        />
+        >
+          <div
+            className="absolute inset-y-0 left-0"
+            style={{
+              width: `${scrollProgress * 100}%`,
+              backgroundColor: "rgba(255, 255, 255, 0.16)",
+              borderRadius: "inherit",
+              transition: "width 0.1s ease-out",
+            }}
+          />
+        </div>
 
         {/* ── Header row: Logo + Dots toggle ── */}
         {/* Exactly positioned over the inner header strip */}

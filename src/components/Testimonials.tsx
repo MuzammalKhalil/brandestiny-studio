@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const testimonials = [
   {
@@ -29,6 +30,7 @@ const testimonials = [
 ];
 
 const Testimonials = () => {
+  const navigate = useNavigate();
   // Double the testimonials for infinite marquee effect
   const doubledTestimonials = [...testimonials, ...testimonials, ...testimonials];
 
@@ -85,12 +87,12 @@ const Testimonials = () => {
 
               {/* Featured Call to Action - Now only shows on hover or if needed */}
               <div className="mb-10 text-center opacity-0 group-hover/card:opacity-100 transition-opacity">
-                <a 
-                  href="#contact" 
+                <button 
+                  onClick={() => navigate("/lets-connect")}
                   className="text-black font-bold text-lg border-b-2 border-black/10 hover:border-black transition-all pb-1"
                 >
                   Book A Call
-                </a>
+                </button>
               </div>
 
               {/* Footer: Avatar + Info */}

@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const OurStory = () => {
+  const navigate = useNavigate();
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -50,7 +52,7 @@ const OurStory = () => {
           </motion.div>
 
           <motion.button
-            onClick={() => scrollTo("#contact")}
+            onClick={() => navigate("/lets-connect")}
             className="group inline-flex items-center gap-3 bg-[#ffeddc] text-[#020202] text-[13px] font-bold tracking-[0.2em] uppercase px-10 py-5 rounded-xl transition-all duration-500 hover:scale-105 shadow-2xl interactive"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

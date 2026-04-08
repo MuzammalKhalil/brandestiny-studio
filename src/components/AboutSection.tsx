@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const AboutSection = () => {
+  const navigate = useNavigate();
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -33,7 +35,7 @@ const AboutSection = () => {
 
           <div className="flex flex-col gap-3 mt-6">
             <motion.button
-              onClick={() => scrollTo("#contact")}
+              onClick={() => navigate("/lets-connect")}
               className="group inline-flex items-center justify-between w-full max-w-[300px] text-[#020202] text-[13px] font-semibold tracking-wider uppercase px-6 py-4 transition-all duration-[450ms] interactive"
               style={{ background: "#fde3c6", borderRadius: 10 }}
               whileHover={{ scale: 1.02 }}
@@ -43,7 +45,7 @@ const AboutSection = () => {
               <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </motion.button>
             <motion.button
-              onClick={() => scrollTo("#projects")}
+              onClick={() => navigate("/case-studies")}
               className="group inline-flex items-center justify-between w-full max-w-[300px] border text-white text-[13px] font-medium tracking-wider uppercase px-6 py-4 hover:bg-white hover:text-[#020202] transition-all duration-[450ms] interactive"
               style={{ borderColor: "rgba(255,255,255,0.25)", borderRadius: 10 }}
               whileHover={{ scale: 1.02 }}

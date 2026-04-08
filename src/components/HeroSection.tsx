@@ -39,30 +39,12 @@ const HeroSection = () => {
         </video>
       </motion.div>
 
-      {/* Central horizontal dashed line and crosshair */}
-      <div className="absolute inset-0 flex items-center justify-center z-[1] pointer-events-none">
-        <div className="w-full px-6 md:px-10 flex items-center justify-between relative">
-          {/* Left dashed line */}
-          <div className="flex-grow h-[1px] border-t border-dashed border-[#2d5af1]/40" />
-          
-          {/* Center Crosshair */}
-          <div className="relative w-8 h-8 flex items-center justify-center mx-4">
-            <div className="absolute w-full h-[1px] bg-[#2d5af1]/60 rotate-45" />
-            <div className="absolute w-full h-[1px] bg-[#2d5af1]/60 -rotate-45" />
-            <div className="w-1 h-1 bg-[#2d5af1] rounded-full" />
-          </div>
-
-          {/* Right dashed line */}
-          <div className="flex-grow h-[1px] border-t border-dashed border-[#2d5af1]/40" />
-        </div>
-      </div>
-
       {/* Main navigation labels — Centered vertically as per image */}
       <div className="absolute inset-0 z-[2] px-6 md:px-10 flex justify-between items-center pointer-events-none">
         <motion.button
           onClick={() => scrollTo("#projects")}
           className="font-pixter text-white font-normal leading-none hover-blur interactive pointer-events-auto"
-          style={{ fontSize: "clamp(3.5rem, 8vw, 8.5rem)" }}
+          style={{ fontSize: "clamp(2.4rem, 6vw, 6.25rem)" }}
           initial={{ opacity: 0, x: -60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -73,7 +55,7 @@ const HeroSection = () => {
         <motion.button
           onClick={() => scrollTo("#services")}
           className="font-pixter text-white font-normal leading-none hover-blur interactive pointer-events-auto"
-          style={{ fontSize: "clamp(3.5rem, 8vw, 8.5rem)" }}
+          style={{ fontSize: "clamp(2.4rem, 6vw, 6.25rem)" }}
           initial={{ opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
