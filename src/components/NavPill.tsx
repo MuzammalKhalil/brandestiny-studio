@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
+import brandestinyLogo from "@/assets/brandestiny-footer-logo.png";
 
 const navItems = [
   { label: "HOME", number: "01", href: "/" },
@@ -321,24 +322,29 @@ const NavPill = () => {
                 ))}
               </div>
 
-              {/* CTA at bottom */}
+              {/* Brand mark at bottom */}
               <motion.div
-                className="mt-auto pt-10"
+                className="mt-auto pt-10 flex flex-col items-start gap-3"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.4 }}
               >
-                <button
-                  onClick={() => handleNavClick("/lets-connect")}
-                  className="group flex items-center gap-[10px] relative cursor-pointer text-left w-fit interactive"
+                <img
+                  src={brandestinyLogo}
+                  alt="Brandestiny"
+                  className="h-16 w-16 object-contain opacity-90"
+                />
+                <p
+                  className="text-white/35 uppercase"
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: 10,
+                    fontWeight: 600,
+                    letterSpacing: "0.18em",
+                  }}
                 >
-                  <span
-                    className="text-white leading-[1] uppercase"
-                    style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 34, fontWeight: 600 }}
-                  >
-                    Let's Connect
-                  </span>
-                </button>
+                  Copyright Brandestiny
+                </p>
               </motion.div>
             </motion.div>
           )}
