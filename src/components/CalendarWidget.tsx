@@ -1,6 +1,7 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { ChevronLeft, ChevronRight, Clock, Globe, Video } from "lucide-react";
 import brandestinyLogo from "@/assets/brandestiny-footer-logo.png";
+import { sendBookingEmails } from "@/lib/bookingEmail";
 
 type BookingForm = {
   name: string;
@@ -63,13 +64,14 @@ export function CalendarWidget() {
   const [selectedTime, setSelectedTime] = useState<number | null>(availableHours[0]);
   const [clockMode, setClockMode] = useState<"12h" | "24h">("24h");
   const [form, setForm] = useState<BookingForm>({ name: "", email: "", notes: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [submissionState, setSubmissionState] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [submissionMessage, setSubmissionMessage] = useState("");
 
   const calendarDays = useMemo(() => buildCalendarDays(visibleMonth), [visibleMonth]);
   const selectedTimeLabel = selectedTime === null ? null : formatTime(selectedTime, clockMode);
   const canGoPrevious =
     visibleMonth.getFullYear() > today.getFullYear() || visibleMonth.getMonth() > today.getMonth();
-  const canSubmit = Boolean(selectedDate && selectedTimeLabel && form.name.trim() && form.email.trim());
+  const canSubmit = Boolean(selectedDate && selectedTimeLabel && form.name.trim() && form.email.trim() && submissionState !== "submitting");
 
   const isAvailable = (date: Date) => {
     const day = date.getDay();
@@ -80,39 +82,44 @@ export function CalendarWidget() {
     setVisibleMonth((current) => new Date(current.getFullYear(), current.getMonth() + direction, 1));
     setSelectedDate(null);
     setSelectedTime(null);
-    setSubmitted(false);
+    setSubmissionState("idle");
+    setSubmissionMessage("");
   };
 
   const handleDateSelect = (date: Date) => {
     if (!isAvailable(date)) return;
     setSelectedDate(date);
     setSelectedTime(null);
-    setSubmitted(false);
+    setSubmissionState("idle");
+    setSubmissionMessage("");
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!canSubmit || !selectedDate || !selectedTimeLabel) return;
 
-    const subject = encodeURIComponent(`Booking request: ${formatLongDate(selectedDate)} at ${selectedTimeLabel}`);
-    const body = encodeURIComponent(
-      [
-        "New booking request",
-        "",
-        `Name: ${form.name.trim()}`,
-        `Email: ${form.email.trim()}`,
-        `Date: ${formatLongDate(selectedDate)}`,
-        `Time: ${selectedTimeLabel}`,
-        `Location: ${meetingLocation}`,
-        `Duration: ${meetingDuration} minutes`,
-        "",
-        "Additional notes:",
-        form.notes.trim() || "None",
-      ].join("\n"),
-    );
+    setSubmissionState("submitting");
+    setSubmissionMessage("");
 
-    window.location.href = `mailto:info@brandestiny.co?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    try {
+      await sendBookingEmails({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        notes: form.notes.trim(),
+        date: formatLongDate(selectedDate),
+        time: selectedTimeLabel,
+        location: meetingLocation,
+        duration: meetingDuration,
+      });
+
+      setSubmissionState("success");
+      setSubmissionMessage("Your call is booked. A confirmation email is on its way.");
+      setForm({ name: "", email: "", notes: "" });
+    } catch (error) {
+      console.error("Booking email failed", error);
+      setSubmissionState("error");
+      setSubmissionMessage("We could not send the booking emails. Please try again or email info@brandestiny.co.");
+    }
   };
 
   return (
@@ -245,7 +252,8 @@ export function CalendarWidget() {
                   type="button"
                   onClick={() => {
                     setSelectedTime(time);
-                    setSubmitted(false);
+                    setSubmissionState("idle");
+                    setSubmissionMessage("");
                   }}
                   className={`w-full rounded-xl border px-4 py-3.5 text-left text-[15px] font-medium transition-all ${
                     selectedTime === time
@@ -331,16 +339,20 @@ export function CalendarWidget() {
                 disabled={!canSubmit}
                 className="rounded-xl bg-[#FDE3C6] px-8 py-4 text-[15px] font-bold text-black transition-all hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Schedule Call
+                {submissionState === "submitting" ? "Scheduling..." : "Schedule Call"}
               </button>
-              {!canSubmit && (
+              {!canSubmit && submissionState === "idle" && (
                 <p className="mt-3 text-sm font-medium text-[#fde3c6]/60">
                   Select a date and time, then enter your name and email to schedule.
                 </p>
               )}
-              {submitted && (
-                <p className="mt-3 text-sm font-medium text-white/70">
-                  Your email app has been opened with the booking request.
+              {submissionMessage && (
+                <p
+                  className={`mt-3 text-sm font-medium ${
+                    submissionState === "error" ? "text-red-300" : "text-white/70"
+                  }`}
+                >
+                  {submissionMessage}
                 </p>
               )}
             </div>
