@@ -21,6 +21,7 @@ const ServiceDetailOverlay = ({ service, onClose }: ServiceDetailOverlayProps) =
 
   const handleLetsConnect = () => {
     onClose();
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     navigate("/lets-connect");
   };
 
@@ -140,6 +141,7 @@ const ServiceDetailOverlay = ({ service, onClose }: ServiceDetailOverlayProps) =
           src={brandestinyLogo}
           alt=""
           className="w-28 md:w-40 select-none"
+          style={{ filter: "invert(1) brightness(2.4) contrast(1.15)" }}
           aria-hidden="true"
         />
       </div>

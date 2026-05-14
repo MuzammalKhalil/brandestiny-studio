@@ -10,6 +10,7 @@ import Blog from "./pages/Blog.tsx";
 import LetsConnect from "./pages/LetsConnect.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Preloader from "./components/Preloader.tsx";
+import RouteTransition from "./components/RouteTransition.tsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <RouteTransition />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/services" element={<Services />} />
