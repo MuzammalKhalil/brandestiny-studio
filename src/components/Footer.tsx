@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Building2, Mail } from "lucide-react";
 import footerLogo from "@/assets/brandestiny-footer-logo.png";
 
 const navLinks = [
@@ -26,6 +26,62 @@ const platformLinks = [
   { label: "Clutch", href: "#" },
   { label: "Google", href: "#" },
 ];
+
+const contactLinks = [
+  { label: "Email", value: "info@brandestiny.co", href: "mailto:info@brandestiny.co", icon: "mail" },
+  { label: "US Phone Number", value: "+1 (213) 993-0155", href: "tel:+12139930155", icon: "us" },
+  { label: "UK Phone Number", value: "+ 44 (020) 382-9286", href: "tel:+440203829286", icon: "uk" },
+  { label: "Company Number", value: "16558368", href: null, icon: "company" },
+];
+
+const FlagIcon = ({ country }: { country: "uk" | "us" }) => {
+  if (country === "uk") {
+    return (
+      <svg viewBox="0 0 60 36" className="h-[18px] w-[30px] shrink-0 rounded-sm" aria-hidden="true">
+        <clipPath id="footer-uk-flag">
+          <rect width="60" height="36" rx="3" />
+        </clipPath>
+        <g clipPath="url(#footer-uk-flag)">
+          <rect width="60" height="36" fill="#012169" />
+          <path d="M0 0l60 36M60 0 0 36" stroke="#fff" strokeWidth="8" />
+          <path d="M0 0l60 36M60 0 0 36" stroke="#C8102E" strokeWidth="4" />
+          <path d="M30 0v36M0 18h60" stroke="#fff" strokeWidth="12" />
+          <path d="M30 0v36M0 18h60" stroke="#C8102E" strokeWidth="7" />
+        </g>
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 60 36" className="h-[18px] w-[30px] shrink-0 rounded-sm" aria-hidden="true">
+      <clipPath id="footer-us-flag">
+        <rect width="60" height="36" rx="3" />
+      </clipPath>
+      <g clipPath="url(#footer-us-flag)">
+        <rect width="60" height="36" fill="#fff" />
+        {Array.from({ length: 7 }).map((_, index) => (
+          <rect key={index} y={index * 5.54} width="60" height="2.77" fill="#B22234" />
+        ))}
+        <rect width="24" height="19.4" fill="#3C3B6E" />
+        {Array.from({ length: 18 }).map((_, index) => (
+          <circle
+            key={index}
+            cx={3.2 + (index % 6) * 3.6}
+            cy={3 + Math.floor(index / 6) * 5.4}
+            r="0.8"
+            fill="#fff"
+          />
+        ))}
+      </g>
+    </svg>
+  );
+};
+
+const ContactIcon = ({ icon }: { icon: string }) => {
+  if (icon === "mail") return <Mail size={18} className="shrink-0 text-white/60" aria-hidden="true" />;
+  if (icon === "company") return <Building2 size={18} className="shrink-0 text-white/60" aria-hidden="true" />;
+  return <FlagIcon country={icon === "us" ? "us" : "uk"} />;
+};
 
 const PlatformLogo = ({ label }: { label: string }) => {
   if (label === "Google") {
@@ -212,16 +268,16 @@ const Footer = () => {
 
       {/* Main footer content */}
       <div className="px-6 md:px-10 pt-10 pb-6">
-        <div className="flex flex-col md:flex-row gap-10 md:gap-8 mb-12">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[0.85fr_0.85fr_1.15fr_0.95fr_1.45fr] lg:gap-8 mb-12">
           {/* Column 1: Navigation */}
-          <div className="md:w-[22%]">
+          <div>
             <h4 className="text-white/40 text-xs font-grotesk uppercase tracking-wider mb-5">Menu</h4>
             <div className="flex flex-col gap-1.5">
               {navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="text-white text-sm hover:opacity-50 transition-opacity duration-[400ms] py-0.5 interactive"
+                  className="text-white text-sm transition-colors duration-300 hover:text-[#fde3c6] py-0.5 interactive"
                   onClick={(e) => {
                     if (link.href.startsWith("#")) {
                       e.preventDefault();
@@ -236,7 +292,7 @@ const Footer = () => {
           </div>
 
           {/* Column 2: Social */}
-          <div className="md:w-[22%]">
+          <div>
             <h4 className="text-white/40 text-xs font-grotesk uppercase tracking-wider mb-5">Social</h4>
             <div className="flex flex-col gap-3">
               {socialLinks.map((link) => (
@@ -257,8 +313,49 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Column 3: Platforms */}
-          <div className="md:w-[22%]">
+          {/* Column 3: Contact */}
+          <div>
+            <h4 className="text-white/40 text-xs font-grotesk uppercase tracking-wider mb-5">Contact</h4>
+            <div className="flex flex-col gap-3">
+              {contactLinks.map((item) => {
+                const content = (
+                  <>
+                    <ContactIcon icon={item.icon} />
+                    <span className="flex flex-col gap-0.5">
+                      <span className="text-[11px] font-grotesk uppercase tracking-wider text-white/40">
+                        {item.label}
+                      </span>
+                      <span className="text-sm font-medium leading-snug text-white">
+                        {item.value}
+                      </span>
+                    </span>
+                  </>
+                );
+
+                if (!item.href) {
+                  return (
+                    <div key={item.label} className="flex items-start gap-3">
+                      {content}
+                    </div>
+                  );
+                }
+
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    className="flex w-fit items-start gap-3 transition-colors duration-300 hover:text-[#fde3c6] interactive"
+                    aria-label={`${item.label}: ${item.value}`}
+                  >
+                    {content}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Column 4: Platforms */}
+          <div>
             <h4 className="text-white/40 text-xs font-grotesk uppercase tracking-wider mb-5">Our Platforms</h4>
             <div className="flex flex-col gap-3">
               {platformLinks.map((link) => (
@@ -276,8 +373,8 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Column 4: Newsletter */}
-          <div className="md:w-[34%] md:ml-auto">
+          {/* Column 5: Newsletter */}
+          <div className="md:col-span-2 lg:col-span-1">
             <h4 className="text-white/40 text-xs font-grotesk uppercase tracking-wider mb-5">Newsletter</h4>
             <div className="p-5" style={{ background: "#fde3c6" }}>
               <p className="text-[#020202] text-sm mb-4 leading-relaxed">
@@ -313,7 +410,7 @@ const Footer = () => {
           >
             To top ↑
           </button>
-          <span className="text-white/40 text-sm">New York & Belgrade</span>
+          <span className="text-white/40 text-sm">Doncaster & Sherman Oaks</span>
           <span className="text-white text-sm font-medium">© 2026 Brandestiny</span>
         </div>
       </div>

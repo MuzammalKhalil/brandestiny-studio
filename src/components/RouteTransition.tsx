@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import gsap from "gsap";
-import brandestinyLogo from "@/assets/brandestiny.png";
+import brandestinyLogo from "@/assets/brandestiny-footer-logo.png";
 
 const RouteTransition = () => {
   const location = useLocation();
@@ -109,7 +109,6 @@ const RouteTransition = () => {
           src={brandestinyLogo}
           alt=""
           className="w-28 md:w-40 select-none"
-          style={{ filter: "invert(1) brightness(2.4) contrast(1.15)" }}
         />
         <span
           className="relative flex min-w-[18rem] md:min-w-[28rem] items-center justify-center overflow-hidden font-display text-3xl md:text-5xl font-bold uppercase tracking-[0.24em] text-white"

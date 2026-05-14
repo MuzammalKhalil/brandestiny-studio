@@ -6,7 +6,6 @@ import NavPill from "@/components/NavPill";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import ServiceDetailOverlay from "@/components/ServiceDetailOverlay";
-import footerLogo from "@/assets/brandestiny-footer-logo.png";
 import { services, type ServiceItem } from "@/data/services";
 
 const Services = () => {
@@ -122,25 +121,6 @@ const Services = () => {
 
           <section className="overflow-hidden px-6 md:px-12 lg:px-20 py-20 md:py-32">
             <div className="border-t border-white/10 pt-10 md:pt-14">
-              <div className="marquee-track mb-14 md:mb-20">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="flex items-center gap-8 mx-8 flex-shrink-0">
-                    <span
-                      className="font-display text-white/70 font-bold whitespace-nowrap tracking-tight"
-                      style={{ fontSize: "clamp(4rem, 8vw, 8rem)" }}
-                    >
-                      BRANDESTINY
-                    </span>
-                    <img
-                      src={footerLogo}
-                      alt="Brandestiny mark"
-                      className="w-16 h-16 md:w-20 md:h-20 object-contain flex-shrink-0 opacity-80"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
-
               <div className="mx-auto flex min-h-[260px] max-w-5xl flex-col items-center justify-center gap-8 text-center">
                 <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-none text-white">
                   Let's Go Beyond the Stars
