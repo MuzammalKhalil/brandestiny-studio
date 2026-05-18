@@ -11,6 +11,7 @@ import LetsConnect from "./pages/LetsConnect.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Preloader from "./components/Preloader.tsx";
 import RouteTransition from "./components/RouteTransition.tsx";
+import FloatingChatbot from "./components/FloatingChatbot.tsx";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <FloatingChatbot />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

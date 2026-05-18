@@ -1,0 +1,39 @@
+# syntax=docker/dockerfile:1
+
+FROM node:20-alpine AS build
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . .
+
+# Vite reads VITE_* values at build time and embeds them into the static bundle.
+ARG VITE_EMAILJS_PUBLIC_KEY
+ARG VITE_EMAILJS_SERVICE_ID
+ARG VITE_EMAILJS_BOOKING_OWNER_TEMPLATE_ID
+ARG VITE_EMAILJS_BOOKING_CUSTOMER_TEMPLATE_ID
+ARG VITE_BOOKING_OWNER_EMAIL
+ARG VITE_BOOKING_MEETING_LINK
+
+ENV VITE_EMAILJS_PUBLIC_KEY=$VITE_EMAILJS_PUBLIC_KEY
+ENV VITE_EMAILJS_SERVICE_ID=$VITE_EMAILJS_SERVICE_ID
+ENV VITE_EMAILJS_BOOKING_OWNER_TEMPLATE_ID=$VITE_EMAILJS_BOOKING_OWNER_TEMPLATE_ID
+ENV VITE_EMAILJS_BOOKING_CUSTOMER_TEMPLATE_ID=$VITE_EMAILJS_BOOKING_CUSTOMER_TEMPLATE_ID
+ENV VITE_BOOKING_OWNER_EMAIL=$VITE_BOOKING_OWNER_EMAIL
+ENV VITE_BOOKING_MEETING_LINK=$VITE_BOOKING_MEETING_LINK
+
+RUN npm run build
+
+FROM nginx:1.27-alpine AS production
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget -qO- http://127.0.0.1/ >/dev/null || exit 1
+
+CMD ["nginx", "-g", "daemon off;"]
